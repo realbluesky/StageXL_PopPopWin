@@ -15,11 +15,22 @@ class SquareElement extends Sprite implements Animatable {
                                                "number_seven", "number_eight"];
 
   final int x, y;
-  Bitmap bitmap = new Bitmap();
+  Bitmap bitmap;
 
   SquareState _lastDrawingState;
 
-  SquareElement(this.x, this.y);
+
+  SquareElement(this.x, this.y) {
+    
+    bitmap = new Bitmap(new BitmapData(_size, _size, true, Color.Transparent));
+    addChild(bitmap);
+    
+    onMouseClick.listen(_onClick);
+    onMouseRightClick.listen(_onClick);
+    
+    useHandCursor = true;
+    
+  }
   
   bool advanceTime(num time) {
     if (_lastDrawingState != _squareState) {
@@ -41,12 +52,15 @@ class SquareElement extends Sprite implements Animatable {
         break;
       case SquareState.revealed:
         textureName = _numberMap[_adjacentCount];
+        useHandCursor = false;
         break;
       case SquareState.bomb:
         textureName = 'crater_b';
+        useHandCursor = false;
         break;
       case SquareState.safe:
         textureName = 'balloon_tagged_bomb';
+        useHandCursor = false;
         break;
     }
 
@@ -56,6 +70,10 @@ class SquareElement extends Sprite implements Animatable {
 
   }
 
+  _onClick(MouseEvent e) {
+    _gameRoot._click(x, y, e.type == MouseEvent.RIGHT_CLICK);
+  }
+    
   String toString() => 'Square at [$x, $y]';
 
   String _getHiddenTexture() {
@@ -76,6 +94,8 @@ class SquareElement extends Sprite implements Animatable {
     final BoardElement p = this.parent;
     return p;
   }
+  
+  GameRoot get _gameRoot => _board._gameElement._gameRoot;
 
   TextureAtlas get _opaqueAtlas => _board._opaqueAtlas;
 

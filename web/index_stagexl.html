@@ -14,29 +14,14 @@
     <link rel="canonical" href="http://dart-lang.github.io/pop-pop-win/" />
     <script type="application/dart" src="game_stagexl.dart"></script>
     <script src="packages/browser/dart.js"></script>
-    <style>
-      #container { position: absolute; z-index:10000; }
-      .game-square { width:50px; height: 50px; }
-      .hidden { background: yellow; }
-      .revealed { background: transparent; }
-      .flagged { background: blue; }
-      .bomb { background: red; }
-      .safe { background: green; }
-    </style>
   </head>
   <body>
-    <div id="container">
-      <table id="game"></table>
-      <div id="left"></div>
-      <div id="state"></div>
-      <div id="clock"></div>
-    </div>
-    <canvas id='gameCanvas' width='1200' height='1200' style="width:100%; height:100%; top:0; left:0;"></canvas>
+    <canvas id='gameCanvas' width='2048' height='1536' style="width:100%; height:100%; top:0; left:0;"></canvas>
     <div id='popup'>
       <div id='about'>
-	      <h1>About</h1>
+        <h1>About</h1>
         <p>Developed in <a href="http://www.dartlang.org/" target="_blank">Dart</a></p>
-	      <p><a href="https://github.com/dart-lang/pop-pop-win" target="_blank">Source Code</a> is on GitHub</p>
+        <p><a href="https://github.com/dart-lang/pop-pop-win" target="_blank">Source Code</a> is on GitHub</p>
         <p><a href="https://github.com/dart-lang/pop-pop-win#license" target="_blank">License</a></p>
       </div>
       <div id='help'>
