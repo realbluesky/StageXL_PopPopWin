@@ -1,3 +1,8 @@
+StageXL_PopPopWin
+=================
+
+Port of Dart Minesweeper clone PopPopWin to StageXL
+
 # Pop, Pop, Win!
 
 An implementation of
