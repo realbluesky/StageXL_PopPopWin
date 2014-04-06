@@ -6,7 +6,6 @@ import 'dart:math' hide Point, Rectangle;
 import 'package:bot/bot.dart';
 import 'package:stagexl/stagexl.dart' hide Vector;
 
-
 import 'html.dart';
 import 'game.dart';
 
