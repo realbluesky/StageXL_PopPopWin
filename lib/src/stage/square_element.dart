@@ -65,7 +65,10 @@ class SquareElement extends Sprite {
 
   
   _onClick(MouseEvent e) {
-    if(!_game.gameEnded) _gameElement._click(x, y, e.type == MouseEvent.RIGHT_CLICK);
+    if(!_game.gameEnded) {
+      bool alt = (e.type == MouseEvent.RIGHT_CLICK) || e.shiftKey;
+      _gameElement._click(x, y, alt);
+    }
   }
     
   String toString() => 'Square at [$x, $y]';

@@ -17,7 +17,7 @@ const String _OPAQUE_TEXTURE = '${_ASSET_DIR}images/opaque.json';
 const String _TRANSPARENT_STATIC_TEXTURE = '${_ASSET_DIR}images/static.json';
 
 Sprite loadingSprite;
-Bitmap bar;
+Gauge bar;
 
 void startGame(PlatformTarget platform) {
   initPlatform(platform);
@@ -37,10 +37,10 @@ void startGame(PlatformTarget platform) {
     
     TextureAtlas ta = resourceManager.getTextureAtlas('static');
     
-    bar = new Bitmap(ta.getBitmapData('loading_bar'))
+    bar = new Gauge(ta.getBitmapData('loading_bar'), Gauge.DIRECTION_RIGHT)
       ..x = 51
       ..y = 8
-      ..width = 0;
+      ..ratio = 0;
     
     loadingSprite = new Sprite()
       ..addChild(new Bitmap(ta.getBitmapData('loading_background')))
@@ -64,7 +64,7 @@ void startGame(PlatformTarget platform) {
       _Audio._AUDIO_NAMES.forEach((s) => resourceManager.addSound(s, 'resources/audio/$s.mp3')); 
             
       resourceManager.onProgress.listen((e) {
-        bar.width = 398 * resourceManager.finishedResources.length~/resourceManager.resources.length;
+        bar.ratio = resourceManager.finishedResources.length/resourceManager.resources.length;
       });
          
       resourceManager.load().then((r) {

@@ -48,7 +48,10 @@ class GameElement extends Sprite {
     _newGameButton = new SimpleButton(newButtonNormal, newButtonPressed, newButtonPressed, newButtonPressed)
         ..x = 450
         ..y = 20
-        ..onMouseClick.listen((e) => manager.newGame())
+        ..onMouseClick.listen((e) {
+          GameAudio.click();
+          manager.newGame();
+        })
         ..addTo(this);
     
     _boardElement = new BoardElement(this)
