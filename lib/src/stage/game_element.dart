@@ -21,11 +21,8 @@ class GameElement extends Sprite {
   
   num _boardSize, _boardScale;
   int _targetX, _targetY;
-  SquareElement _mouseDownElement, _lastHoldUnfreeze;
-  Timer _mouseDownTimer;
   TextureAtlas _animations;
 
-  //---------------------------------------------------------------------------------------------------
   GameRoot get manager => _gameRoot;
   Game get game => _gameRoot.game;
   ResourceManager get resourceManager => _gameRoot.resourceManager;
@@ -68,12 +65,13 @@ class GameElement extends Sprite {
       
     });
     
+    num logoScale = min(max(_boardScale, 1.1), 1.5);
     Bitmap logo = new Bitmap(sta.getBitmapData('logo_win'));
     _logoButton = new SimpleButton(logo, logo, logo, logo);
     _logoButton
         ..y = 20
-        ..scaleX = min(_boardScale, 1.5)
-        ..scaleY = min(_boardScale, 1.5)
+        ..scaleX = logoScale
+        ..scaleY = logoScale
         ..x = _backgroundSize.width/2 - _logoButton.width/2
         ..onMouseClick.listen((e) => _titleClickedEventHandle.add(EventArgs.empty))
         ..addTo(this);

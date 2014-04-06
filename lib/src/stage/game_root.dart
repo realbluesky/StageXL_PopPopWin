@@ -29,31 +29,11 @@ class GameRoot extends GameManager {
     }
   }
 
-  void gameUpdated(args) {
-  }
-  
-  void updateElement() {
-    updateClock();
-    
-    //_gameStateDiv.innerHtml = game.state.name;
-    //_leftCountDiv.innerHtml = game.bombsLeft.toString();
-
-  }
+  void gameUpdated(args) { }
 
   void newGame() {
     super.newGame();
     if(_gameElement != null) _gameElement._boardElement.squares.forEach((se) => se.updateState());
-  }
-
-  void updateClock() {
-    if(game.duration == null) {
-      //_clockDiv.innerHtml = '';
-    } else {
-      //_clockDiv.innerHtml = game.duration.inSeconds.toString();
-    }
-
-    super.updateClock();
-  }   
+  } 
   
-
 }

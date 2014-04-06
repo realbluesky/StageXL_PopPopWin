@@ -56,10 +56,6 @@ void startGame(PlatformTarget platform) {
         ..addTextureAtlas('opaque', 'resources/images/opaque.json', TextureAtlasFormat.JSON)
         ..addTextureAtlas('animated', 'resources/images/animated.json', TextureAtlasFormat.JSON);
       
-      var sounds = ['Pop0', 'Pop1', 'Pop2', 'Pop3', 'Pop4', 'Pop5', 'Pop6', 'Pop7', 'Pop8',
-                    'Bomb0', 'Bomb1', 'Bomb2', 'Bomb3', 'Bomb4',
-                    'throw', 'flag', 'unflag', 'click', 'win'];
-      
       //TODO use sound sprites if Bernhard merges PR
       _Audio._AUDIO_NAMES.forEach((s) => resourceManager.addSound(s, 'resources/audio/$s.mp3')); 
             
@@ -76,7 +72,7 @@ void startGame(PlatformTarget platform) {
 
         targetPlatform.aboutChanged.listen((_) => _updateAbout());
 
-        final size = targetPlatform.renderBig ? 16 : (targetPlatform.renderMed ? 11 : 7);
+        final size = targetPlatform.size;
         final int m = (size * size * 0.15625).toInt();
 
         final _Audio _audio = new _Audio(resourceManager);

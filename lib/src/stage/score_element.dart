@@ -5,7 +5,7 @@ class ScoreElement extends TextField implements Animatable {
   num _bestTime;
   
   ScoreElement(this._bestTime) {
-      defaultTextFormat = new TextFormat('Slackey, cursive', 28, Color.Black, leading: 3);
+      defaultTextFormat = new TextFormat('Slackey, cursive', 28, Color.Black, leading: 1);
       autoSize = TextFieldAutoSize.LEFT;
       x = 1400;
       y = 20;
@@ -17,8 +17,7 @@ class ScoreElement extends TextField implements Animatable {
       text = 'Bombs Left: ${game.bombsLeft}\nTime: $time';
           if(_bestTime>0) text = text+'\nRecord: ${(_bestTime/1000).toStringAsFixed(1)}';
           
-          return true;  
-    
+          return true; 
   }
   
   Game get game => (parent as GameElement)._gameRoot.game; 

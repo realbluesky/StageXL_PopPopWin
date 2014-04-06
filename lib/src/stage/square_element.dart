@@ -16,12 +16,8 @@ class SquareElement extends Sprite {
 
   final int x, y;
   Bitmap bitmap;
-  num _touchStartTime = 0;
 
-  SquareState _lastDrawingState;
-
-  SquareElement(this.x, this.y) {
-    
+  SquareElement(this.x, this.y) {   
     bitmap = new Bitmap(new BitmapData(_size, _size, true, Color.Transparent));
     addChild(bitmap);
     
@@ -33,10 +29,9 @@ class SquareElement extends Sprite {
   }
   
 
-  void updateState([SquareState override]) {
+  void updateState() {
     var textureName;
-    var state = override == null?_squareState:override;
-    switch (state) {
+    switch (_squareState) {
       case SquareState.hidden:
         textureName = _getHiddenTexture();
         break;
@@ -45,17 +40,16 @@ class SquareElement extends Sprite {
         break;
       case SquareState.revealed:
         textureName = _numberMap[_adjacentCount];
-        useHandCursor = false;
         break;
       case SquareState.bomb:
         textureName = 'crater_b';
-        useHandCursor = false;
         break;
       case SquareState.safe:
         textureName = 'balloon_tagged_bomb';
-        useHandCursor = false;
         break;
     }
+    
+    useHandCursor = !_game.gameEnded && [SquareState.hidden, SquareState.flagged].contains(_squareState);
     
     bitmap.bitmapData
       ..clear()
