@@ -23,6 +23,7 @@ abstract class PlatformTarget {
   Future<String> getValue(String key);
 
   bool get renderBig;
+  bool get renderMed;
 
   bool get showAbout;
 
@@ -49,6 +50,7 @@ class _DefaultPlatform extends PlatformTarget {
   Future<String> getValue(String key) => new Future(() => _values[key]);
 
   bool get renderBig => false;
+  bool get renderMed => false;
 
   void toggleAbout([bool value]) {
     assert(_about != null);

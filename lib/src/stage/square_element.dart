@@ -1,6 +1,6 @@
 part of pop_pop_win.stage;
 
-class SquareElement extends Sprite implements Animatable {
+class SquareElement extends Sprite {
   static const int _size = 80;
   
   static const List<String> _balloonBits = const['balloon_pieces_a',
@@ -16,9 +16,9 @@ class SquareElement extends Sprite implements Animatable {
 
   final int x, y;
   Bitmap bitmap;
+  num _touchStartTime = 0;
 
   SquareState _lastDrawingState;
-
 
   SquareElement(this.x, this.y) {
     
@@ -32,18 +32,11 @@ class SquareElement extends Sprite implements Animatable {
     
   }
   
-  bool advanceTime(num time) {
-    if (_lastDrawingState != _squareState) {
-      _lastDrawingState = _squareState;
-      updateState();
-    }
-    
-    return true;
-  }
 
-  void updateState() {
+  void updateState([SquareState override]) {
     var textureName;
-    switch (_lastDrawingState) {
+    var state = override == null?_squareState:override;
+    switch (state) {
       case SquareState.hidden:
         textureName = _getHiddenTexture();
         break;
@@ -63,25 +56,28 @@ class SquareElement extends Sprite implements Animatable {
         useHandCursor = false;
         break;
     }
-
+    
     bitmap.bitmapData
       ..clear()
       ..drawPixels(_opaqueAtlas.getBitmapData(textureName), new Rectangle(0,0,_size,_size), new Point(0,0));
-
+    
   }
 
+  
   _onClick(MouseEvent e) {
-    _gameRoot._click(x, y, e.type == MouseEvent.RIGHT_CLICK);
+    if(!_game.gameEnded) _gameElement._click(x, y, e.type == MouseEvent.RIGHT_CLICK);
   }
     
   String toString() => 'Square at [$x, $y]';
 
   String _getHiddenTexture() {
-    assert(_lastDrawingState == SquareState.hidden);
+    assert(_squareState == SquareState.hidden);
     if (_game.state == GameState.lost) {
+      useHandCursor = false;
       final index = (x + y) % _balloonBits.length;
       return _balloonBits[index];
     } else {
+      useHandCursor = true;
       return 'balloon';
     }
   }
@@ -95,7 +91,7 @@ class SquareElement extends Sprite implements Animatable {
     return p;
   }
   
-  GameRoot get _gameRoot => _board._gameElement._gameRoot;
+  GameElement get _gameElement => _board._gameElement;
 
   TextureAtlas get _opaqueAtlas => _board._opaqueAtlas;
 

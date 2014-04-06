@@ -14,18 +14,15 @@ class BoardElement extends Sprite {
       final coords = _elements.getCoordinate(i);
       final se = new SquareElement(coords.item1, coords.item2);      
       
-      
-      
       se  
         ..x = coords.item1 * scaledSize
         ..y = coords.item2 * scaledSize
         ..scaleX = _boardScale
         ..scaleY = _boardScale
         ..addTo(this);
-      
-      _stage.juggler.add(se);
-      
+
       _elements[i] = se;
+      se.updateState();
     }
     
   }
@@ -33,6 +30,7 @@ class BoardElement extends Sprite {
   GameElement get _gameElement => parent;
   num get _boardScale => _gameElement._boardScale;
   num get _boardSize => _gameElement._boardSize;
+  Array2d<SquareElement> get squares => _elements;
   Game get _game => _gameElement.game;
   Stage get _stage => _gameElement._gameRoot.stage;
 

@@ -5,7 +5,8 @@ import 'dart:html';
 import 'package:pop_pop_win/platform_target.dart';
 
 class PlatformWeb extends PlatformTarget {
-  static const String _BIG_HASH = '#big';
+  static const String _BIG_HASH = '#hard';
+  static const String _MEDIUM_HASH = '#medium';
   static const String _ABOUT_HASH = '#about';
 
   final StreamController _aboutController = new StreamController(sync: true);
@@ -31,6 +32,7 @@ class PlatformWeb extends PlatformTarget {
       new Future.value(window.localStorage[key]);
 
   bool get renderBig => _urlHash == _BIG_HASH;
+  bool get renderMed => _urlHash == _MEDIUM_HASH;
 
   bool get showAbout => _urlHash == _ABOUT_HASH;
 

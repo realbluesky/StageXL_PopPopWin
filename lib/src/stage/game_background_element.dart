@@ -67,8 +67,8 @@ class GameBackgroundElement extends Sprite {
       }
       
       Bitmap board = new Bitmap(boardData)
-        ..x = 352
-        ..y = 96
+        ..x = GameElement._boardOffset.x
+        ..y = GameElement._boardOffset.y
         ..scaleX = _backgroundScale
         ..scaleY = _backgroundScale;
       

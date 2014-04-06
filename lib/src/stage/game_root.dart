@@ -1,8 +1,6 @@
 part of pop_pop_win.stage;
 
 class GameRoot extends GameManager {
-  static const String _xKey = 'x';
-  static const String _yKey = 'y';
 
   final Stage stage;
   final ResourceManager resourceManager;
@@ -20,30 +18,31 @@ class GameRoot extends GameManager {
         ..addChild(_gameElement)
         ..juggler.tween(_gameElement, .5).animate.alpha.to(1);
     
-    //_gameElement.onEnterFrame.listen(_onEnterFrame);
-    
   }
   
-  void _onEnterFrame(EnterFrameEvent e) {
-    updateClock();
+  void onGameStateChanged(GameState newState) {
+    switch (newState) {
+      case GameState.won:
+        _gameElement._boardElement.squares.forEach((se) => se.updateState());
+        GameAudio.win();
+        break;
+    }
   }
 
   void gameUpdated(args) {
-    updateElement();
   }
   
   void updateElement() {
     updateClock();
+    
     //_gameStateDiv.innerHtml = game.state.name;
     //_leftCountDiv.innerHtml = game.bombsLeft.toString();
-
 
   }
 
   void newGame() {
     super.newGame();
-    //_table.children.clear();
-    //updateElement();
+    if(_gameElement != null) _gameElement._boardElement.squares.forEach((se) => se.updateState());
   }
 
   void updateClock() {
@@ -54,24 +53,7 @@ class GameRoot extends GameManager {
     }
 
     super.updateClock();
-  }
-
-   void _click(int x, int y, bool flag) {
-    final ss = game.getSquareState(x, y);
-
-    if (flag) {
-      if (ss == SquareState.hidden) {
-        game.setFlag(x, y, true);
-      } else if (ss == SquareState.flagged) {
-        game.setFlag(x, y, false);
-      } else if (ss == SquareState.revealed) {
-        game.reveal(x, y);
-      }
-    } else {
-      if (ss == SquareState.hidden) {
-        game.reveal(x, y);
-      }
-    }
-  }
+  }   
+  
 
 }

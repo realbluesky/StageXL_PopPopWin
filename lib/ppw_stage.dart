@@ -1,7 +1,6 @@
 library ppw_stage;
 
 import 'dart:html';
-import 'dart:web_audio';
 import 'package:bot/bot.dart';
 import 'package:stagexl/stagexl.dart';
 
@@ -17,19 +16,13 @@ const String _TRANSPARENT_TEXTURE = '${_ASSET_DIR}images/transparent.json';
 const String _OPAQUE_TEXTURE = '${_ASSET_DIR}images/opaque.json';
 const String _TRANSPARENT_STATIC_TEXTURE = '${_ASSET_DIR}images/static.json';
 
-//final _Audio _audio = new _Audio();
-
-//Stage stage;
-//RenderLoop renderLoop;
-//ResourceManager resourceManager;
-
 Sprite loadingSprite;
 Bitmap bar;
 
 void startGame(PlatformTarget platform) {
   initPlatform(platform);
 
-  Stage stage = new Stage(querySelector('#gameCanvas'), webGL: true, color: 0xb4ad7f);
+  Stage stage = new Stage(querySelector('#gameCanvas'), webGL: true, color: 0xb4ad7f, frameRate: 60);
   RenderLoop renderLoop = new RenderLoop();
   renderLoop.addStage(stage);
   
@@ -67,8 +60,8 @@ void startGame(PlatformTarget platform) {
                     'Bomb0', 'Bomb1', 'Bomb2', 'Bomb3', 'Bomb4',
                     'throw', 'flag', 'unflag', 'click', 'win'];
       
-      //TODO use sound sprites if Bernhard merges PR 
-      sounds.forEach((s) => resourceManager.addSound(s, 'resources/audio/$s.mp3')); 
+      //TODO use sound sprites if Bernhard merges PR
+      _Audio._AUDIO_NAMES.forEach((s) => resourceManager.addSound(s, 'resources/audio/$s.mp3')); 
             
       resourceManager.onProgress.listen((e) {
         bar.width = 398 * resourceManager.finishedResources.length~/resourceManager.resources.length;
@@ -83,10 +76,10 @@ void startGame(PlatformTarget platform) {
 
         targetPlatform.aboutChanged.listen((_) => _updateAbout());
 
-        final size = targetPlatform.renderBig ? 16 : 7;
+        final size = targetPlatform.renderBig ? 16 : (targetPlatform.renderMed ? 11 : 7);
         final int m = (size * size * 0.15625).toInt();
 
-        //final gameRoot = new GameRoot(size, size, m, gameCanvas, textureData);
+        final _Audio _audio = new _Audio(resourceManager);
         final gameRoot = new GameRoot(size, size, m, stage, resourceManager);
 
         // disable touch events
@@ -95,6 +88,7 @@ void startGame(PlatformTarget platform) {
         window.onKeyDown.listen(_onKeyDown);
 
         querySelector('#popup').onClick.listen(_onPopupClick);
+        querySelectorAll('.difficulty a').onClick.listen(_onDifficultyClick);
 
         titleClickedEvent.listen((args) => targetPlatform.toggleAbout(true));
           
@@ -113,6 +107,12 @@ void _onPopupClick(args) {
   if (args.toElement is! AnchorElement) {
     targetPlatform.toggleAbout(false);
   }
+}
+
+void _onDifficultyClick(args) {
+  window.location
+    ..href = args.toElement.href
+    ..reload();
 }
 
 void _onKeyDown(args) {
