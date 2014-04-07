@@ -24,6 +24,8 @@ class GameRoot extends GameManager {
     switch (newState) {
       case GameState.won:
         _gameElement._boardElement.squares.forEach((se) => se.updateState());
+        if(game.duration.inMilliseconds < _gameElement._scoreElement.bestTime || _gameElement._scoreElement.bestTime == 0)
+          _gameElement._scoreElement.bestTime = game.duration.inMilliseconds;
         GameAudio.win();
         break;
     }

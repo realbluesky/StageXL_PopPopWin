@@ -2,9 +2,9 @@ part of pop_pop_win.stage;
 
 class ScoreElement extends TextField implements Animatable {
 
-  num _bestTime;
+  int bestTime;
 
-  ScoreElement(this._bestTime) {
+  ScoreElement(this.bestTime) {
     defaultTextFormat = new TextFormat('Slackey, cursive', 28, Color.Black, leading: 1);
     autoSize = TextFieldAutoSize.LEFT;
     x = 1400;
@@ -15,8 +15,8 @@ class ScoreElement extends TextField implements Animatable {
       var time = (game.duration == null) ?
           '0' : (game.duration.inMilliseconds / 1000) .toStringAsFixed(1);
       text = 'Bombs Left: ${game.bombsLeft}\nTime: $time';
-      if (_bestTime > 0) {
-        text = text + '\nRecord: ${(_bestTime/1000).toStringAsFixed(1)}';
+      if (bestTime > 0) {
+        text = text + '\nRecord: ${(bestTime/1000).toStringAsFixed(1)}';
       }
       return true;
   }
