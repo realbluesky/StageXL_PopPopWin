@@ -1,7 +1,8 @@
 library pop_pop_win;
 
 import 'dart:html';
-import 'package:bot/bot.dart';
+import 'dart:math' as math;
+
 import 'package:stagexl/stagexl.dart';
 
 import 'package:pop_pop_win/platform_target.dart';
@@ -16,33 +17,30 @@ const String _TRANSPARENT_TEXTURE = '${_ASSET_DIR}images/transparent.json';
 const String _OPAQUE_TEXTURE = '${_ASSET_DIR}images/opaque.json';
 const String _TRANSPARENT_STATIC_TEXTURE = '${_ASSET_DIR}images/static.json';
 
-Sprite loadingSprite;
-Gauge bar;
-
 void startGame(PlatformTarget platform) {
   initPlatform(platform);
 
   Stage stage = new Stage(querySelector('#gameCanvas'), webGL: true, color: 0xb4ad7f, frameRate: 60);
   RenderLoop renderLoop = new RenderLoop();
   renderLoop.addStage(stage);
-  
+
   //TODO create webp versions of image assets
   //BitmapData.defaultLoadOptions.webp = true;
-  
+
   //have to load the loading bar first...
   ResourceManager resourceManager = new ResourceManager();
   resourceManager
     ..addTextureAtlas("static", "resources/images/static.json", TextureAtlasFormat.JSON)
     ..load().then((r) {
-    
+
     TextureAtlas ta = resourceManager.getTextureAtlas('static');
-    
-    bar = new Gauge(ta.getBitmapData('loading_bar'), Gauge.DIRECTION_RIGHT)
+
+    var bar = new Gauge(ta.getBitmapData('loading_bar'), Gauge.DIRECTION_RIGHT)
       ..x = 51
       ..y = 8
       ..ratio = 0;
-    
-    loadingSprite = new Sprite()
+
+    var loadingSprite = new Sprite()
       ..addChild(new Bitmap(ta.getBitmapData('loading_background')))
       ..addChild(bar)
       ..addChild(new Bitmap(ta.getBitmapData('loading_text'))..x=141..y=10)
@@ -51,32 +49,32 @@ void startGame(PlatformTarget platform) {
       ..scaleX = 2
       ..scaleY = 2
       ..addTo(stage);
-    
+
     resourceManager
         ..addTextureAtlas('opaque', 'resources/images/opaque.json', TextureAtlasFormat.JSON)
         ..addTextureAtlas('animated', 'resources/images/animated.json', TextureAtlasFormat.JSON);
-      
+
       //TODO use sound sprites if Bernhard merges PR
-      _Audio._AUDIO_NAMES.forEach((s) => resourceManager.addSound(s, 'resources/audio/$s.mp3')); 
-            
+      _Audio._AUDIO_NAMES.forEach((s) => resourceManager.addSound(s, 'resources/audio/$s.mp3'));
+
       resourceManager.onProgress.listen((e) {
         bar.ratio = resourceManager.finishedResources.length/resourceManager.resources.length;
       });
-         
+
       resourceManager.load().then((r) {
 
         Tween tween = stage.juggler.tween(loadingSprite, .5)..animate.alpha.to(0);
-        tween.onComplete = () => stage.removeChild(loadingSprite); 
-        
+        tween.onComplete = () => stage.removeChild(loadingSprite);
+
         _updateAbout();
 
         targetPlatform.aboutChanged.listen((_) => _updateAbout());
 
-        final size = targetPlatform.size;
-        final int m = (size * size * 0.15625).toInt();
+        var size = targetPlatform.size;
+        var m = (size * size * 0.15625).toInt();
 
-        final _Audio _audio = new _Audio(resourceManager);
-        final gameRoot = new GameRoot(size, size, m, stage, resourceManager);
+        var _audio = new _Audio(resourceManager);
+        var gameRoot = new GameRoot(size, size, m, stage, resourceManager);
 
         // disable touch events
         window.onTouchMove.listen((args) => args.preventDefault());
@@ -87,16 +85,14 @@ void startGame(PlatformTarget platform) {
         querySelectorAll('.difficulty a').onClick.listen(_onDifficultyClick);
 
         titleClickedEvent.listen((args) => targetPlatform.toggleAbout(true));
-          
-      }).catchError((error) {
 
+      }).catchError((error) {
         for(var resource in resourceManager.failedResources) {
-          print("Loading resouce failed: ${resource.kind}.${resource.name} - ${resource.error}");
+          print("Loading resouce failed: "
+              "${resource.kind}.${resource.name} - ${resource.error}");
         }
       });
-    
   });
-  
 }
 
 void _onPopupClick(args) {

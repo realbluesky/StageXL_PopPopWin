@@ -18,12 +18,12 @@ class GameStorage {
     assert(game != null);
     assert(game.state == GameState.won);
 
-    final w = game.field.width;
-    final h = game.field.height;
-    final m = game.field.bombCount;
-    final duration = game.duration.inMilliseconds;
+    var w = game.field.width;
+    var h = game.field.height;
+    var m = game.field.bombCount;
+    var duration = game.duration.inMilliseconds;
 
-    final key = _getKey(w, h, m);
+    var key = _getKey(w, h, m);
 
     return _getIntValue(key, null)
         .then((int currentScore) {
@@ -83,5 +83,4 @@ class GameStorage {
       return int.parse(value);
     }
   }
-
 }

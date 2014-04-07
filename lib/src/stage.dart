@@ -17,6 +17,6 @@ part 'stage/score_element.dart';
 part 'stage/square_element.dart';
 part 'stage/game_audio.dart';
 
-final EventHandle _titleClickedEventHandle = new EventHandle<EventArgs>();
+final StreamController _titleClickedEventHandle = new StreamController();
 
 Stream get titleClickedEvent => _titleClickedEventHandle.stream;

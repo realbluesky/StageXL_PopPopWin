@@ -6,6 +6,8 @@ class _Audio {
              'Bomb0', 'Bomb1', 'Bomb2', 'Bomb3', 'Bomb4',
              GameAudio.THROW_DART, GameAudio.FLAG, GameAudio.UNFLAG, GameAudio.CLICK, GameAudio.WIN];
 
+  final math.Random _rnd = new math.Random();
+
   final ResourceManager _resourceManager;
 
   _Audio(this._resourceManager) {
@@ -15,15 +17,14 @@ class _Audio {
   void _playAudio(String name) {
     switch (name) {
       case GameAudio.POP:
-        final i = rnd.nextInt(8);
+        var i = _rnd.nextInt(8);
         name = '${GameAudio.POP}$i';
         break;
       case GameAudio.BOMB:
-        final i = rnd.nextInt(4);
+        var i = _rnd.nextInt(4);
         name = '${GameAudio.BOMB}$i';
         break;
     }
     _resourceManager.getSound(name).play();
   }
-
 }
