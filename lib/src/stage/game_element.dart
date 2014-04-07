@@ -10,15 +10,15 @@ class GameElement extends Sprite {
   static const _dartAnimationOffset =
       const Vector(-512 + 0.5 * SquareElement._size,
           -388 + 0.5 * SquareElement._size);
-  
-  GameRoot _gameRoot;
-  
+
+  final GameRoot _gameRoot;
+
   GameBackgroundElement _gameBackground;
   BoardElement _boardElement;
   ScoreElement _scoreElement;
   SimpleButton _newGameButton, _logoButton;
   Sprite _popLayer = new Sprite(), _dartLayer = new Sprite();
-  
+
   num _boardSize, _boardScale;
   int _targetX, _targetY;
   TextureAtlas _animations;
@@ -26,10 +26,8 @@ class GameElement extends Sprite {
   GameRoot get manager => _gameRoot;
   Game get game => _gameRoot.game;
   ResourceManager get resourceManager => _gameRoot.resourceManager;
-  
-  GameElement(GameRoot gameRoot) {
-    _gameRoot = gameRoot;
 
+  GameElement(this._gameRoot) {
     TextureAtlas opa = resourceManager.getTextureAtlas('opaque');
     TextureAtlas sta = resourceManager.getTextureAtlas('static');
     _animations = resourceManager.getTextureAtlas('animated');
@@ -37,8 +35,8 @@ class GameElement extends Sprite {
     _boardSize = game.field.width * SquareElement._size + 2 * _edgeOffset;
     _boardScale = _backgroundHoleSize / _boardSize;
 
-    _gameBackground = new GameBackgroundElement(this, opa);    
-        
+    _gameBackground = new GameBackgroundElement(this, opa);
+
     Bitmap newButtonNormal = new Bitmap(sta.getBitmapData("button_new_game"));
     Bitmap newButtonPressed = new Bitmap(sta.getBitmapData("button_new_game_clicked"));
 
@@ -50,21 +48,21 @@ class GameElement extends Sprite {
           manager.newGame();
         })
         ..addTo(this);
-    
+
     _boardElement = new BoardElement(this)
-      ..x = _boardOffset.x + _edgeOffset * _boardScale 
+      ..x = _boardOffset.x + _edgeOffset * _boardScale
       ..y = _boardOffset.y + _edgeOffset * _boardScale;
-    
+
 
     _gameRoot.bestTimeMilliseconds.then((v) {
       if(v == null) v = 0;
       _scoreElement = new ScoreElement(v)
         ..addTo(this);
-      
+
       stage.juggler.add(_scoreElement);
-      
+
     });
-    
+
     num logoScale = min(max(_boardScale, 1.1), 1.5);
     Bitmap logo = new Bitmap(sta.getBitmapData('logo_win'));
     _logoButton = new SimpleButton(logo, logo, logo, logo);
@@ -73,27 +71,27 @@ class GameElement extends Sprite {
         ..scaleX = logoScale
         ..scaleY = logoScale
         ..x = _backgroundSize.width/2 - _logoButton.width/2
-        ..onMouseClick.listen((e) => _titleClickedEventHandle.add(EventArgs.empty))
+        ..onMouseClick.listen((e) => _titleClickedEventHandle.add(null))
         ..addTo(this);
-    
+
     _popLayer
         ..mouseEnabled = false
-        ..x = _boardOffset.x + _edgeOffset * _boardScale 
+        ..x = _boardOffset.x + _edgeOffset * _boardScale
         ..y = _boardOffset.y + _edgeOffset * _boardScale
         ..scaleX = _boardScale
         ..scaleY = _boardScale
         ..addTo(this);
-    
+
     _dartLayer
         ..mouseEnabled = false
-        ..x = _boardOffset.x + _edgeOffset * _boardScale 
+        ..x = _boardOffset.x + _edgeOffset * _boardScale
         ..y = _boardOffset.y + _edgeOffset * _boardScale
         ..scaleX = _boardScale
         ..scaleY = _boardScale
         ..addTo(this);
 
   }
-  
+
   bool get canRevealTarget =>
       _targetX != null && game.canReveal(_targetX, _targetY);
 
@@ -105,7 +103,7 @@ class GameElement extends Sprite {
       game.reveal(_targetX, _targetY);
     }
   }
-  
+
   void _click(int x, int y, bool alt) {
       assert(!game.gameEnded);
       final ss = game.getSquareState(x, y);
@@ -152,7 +150,7 @@ class GameElement extends Sprite {
         _startPopAnimation(new Coordinate(x, y));
       }
     }
-  
+
   bool _toggleFlag(int x, int y) {
     assert(!game.gameEnded);
     final se = _boardElement.squares.get(x, y);
@@ -170,7 +168,7 @@ class GameElement extends Sprite {
     }
     return false;
   }
-  
+
   void _startPopAnimation(Coordinate start, [Iterable<Coordinate> reveals = null]) {
       if(reveals == null) {
         assert(game.state == GameState.lost);
@@ -221,7 +219,7 @@ class GameElement extends Sprite {
           ..mouseEnabled = false
           ..onComplete.listen((e) => anim.removeFromParent())
           ..addTo(_popLayer);
-        
+
         stage.juggler
             ..add(anim)
             ..delayCall(() {
@@ -249,7 +247,7 @@ class GameElement extends Sprite {
       for(final point in points) {
         final squareOffset = _dartAnimationOffset +
             new Vector(SquareElement._size * point.x, SquareElement._size * point.y);
-        
+
         FlipBook dart = new FlipBook(_animations.getBitmapDatas('dart'), stage.frameRate, false);
         dart
           ..x = squareOffset.x
@@ -258,7 +256,7 @@ class GameElement extends Sprite {
           ..play()
           ..onComplete.listen((e) => dart.removeFromParent())
           ..addTo(_dartLayer);
-        
+
         FlipBook shadow = new FlipBook(_animations.getBitmapDatas('shadow'), stage.frameRate, false);
         shadow
           ..x = squareOffset.x
@@ -267,13 +265,13 @@ class GameElement extends Sprite {
           ..play()
           ..onComplete.listen((e) => shadow.removeFromParent())
           ..addTo(_dartLayer);
-        
+
         stage.juggler
             ..add(dart)
             ..add(shadow);
 
       }
     }
-  
-  
+
+
 }

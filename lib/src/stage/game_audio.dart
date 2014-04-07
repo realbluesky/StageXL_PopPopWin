@@ -4,7 +4,8 @@ class GameAudio {
   static const String WIN = 'win', CLICK = 'click', POP = 'Pop', FLAG = 'flag',
       UNFLAG = 'unflag', BOMB = 'Bomb', THROW_DART = 'throw';
 
-  static final EventHandle<String> _audioEventHandle = new EventHandle<String>();
+  static final StreamController<String> _audioEventHandle =
+      new StreamController<String>();
 
   static Stream<String> get audioEvent => _audioEventHandle.stream;
 

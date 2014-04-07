@@ -2,7 +2,7 @@ part of pop_pop_win.stage;
 
 class SquareElement extends Sprite {
   static const int _size = 80;
-  
+
   static const List<String> _balloonBits = const['balloon_pieces_a',
                                                  'balloon_pieces_b',
                                                  'balloon_pieces_c',
@@ -15,19 +15,16 @@ class SquareElement extends Sprite {
                                                "number_seven", "number_eight"];
 
   final int x, y;
-  Bitmap bitmap;
+  final Bitmap bitmap = new Bitmap(new BitmapData(_size, _size, true, Color.Transparent));
 
-  SquareElement(this.x, this.y) {   
-    bitmap = new Bitmap(new BitmapData(_size, _size, true, Color.Transparent));
+  SquareElement(this.x, this.y) {
     addChild(bitmap);
-    
+
     onMouseClick.listen(_onClick);
     onMouseRightClick.listen(_onClick);
-    
+
     useHandCursor = true;
-    
   }
-  
 
   void updateState() {
     var textureName;
@@ -48,23 +45,21 @@ class SquareElement extends Sprite {
         textureName = 'balloon_tagged_bomb';
         break;
     }
-    
+
     useHandCursor = !_game.gameEnded && [SquareState.hidden, SquareState.flagged].contains(_squareState);
-    
+
     bitmap.bitmapData
       ..clear()
       ..drawPixels(_opaqueAtlas.getBitmapData(textureName), new Rectangle(0,0,_size,_size), new Point(0,0));
-    
   }
 
-  
-  _onClick(MouseEvent e) {
+  void _onClick(MouseEvent e) {
     if(!_game.gameEnded) {
       bool alt = (e.type == MouseEvent.RIGHT_CLICK) || e.shiftKey;
       _gameElement._click(x, y, alt);
     }
   }
-    
+
   String toString() => 'Square at [$x, $y]';
 
   String _getHiddenTexture() {
@@ -87,7 +82,7 @@ class SquareElement extends Sprite {
     final BoardElement p = this.parent;
     return p;
   }
-  
+
   GameElement get _gameElement => _board._gameElement;
 
   TextureAtlas get _opaqueAtlas => _board._opaqueAtlas;
