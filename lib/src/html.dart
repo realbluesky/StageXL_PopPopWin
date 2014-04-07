@@ -2,7 +2,6 @@ library pop_pop_win.html;
 
 import 'dart:async';
 
-import 'package:bot/bot.dart';
 import 'package:pop_pop_win/platform_target.dart';
 
 import 'game.dart';

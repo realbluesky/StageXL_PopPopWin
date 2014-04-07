@@ -15,7 +15,7 @@ abstract class GameManager {
 
   Game get game => _game;
 
-  Stream<EventArgs> get bestTimeUpdated => _gameStorage.bestTimeUpdated;
+  Stream get bestTimeUpdated => _gameStorage.bestTimeUpdated;
 
   Future<int> get bestTimeMilliseconds =>
       _gameStorage.getBestTimeMilliseconds(_width, _height, _bombCount);

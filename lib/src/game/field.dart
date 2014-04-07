@@ -24,7 +24,7 @@ class Field extends Array2d<bool> {
     }
 
     return new Field._internal(bombCount, cols,
-        new ReadOnlyCollection<bool>(squares));
+        new UnmodifiableListView<bool>(squares));
   }
 
   factory Field.fromSquares(int cols, int rows, List<bool> squares) {
@@ -42,12 +42,12 @@ class Field extends Array2d<bool> {
     assert(count < squares.length);
 
     return new Field._internal(count, cols,
-        new ReadOnlyCollection<bool>(squares));
+        new UnmodifiableListView<bool>(squares));
   }
 
-  Field._internal(this.bombCount, int cols, ReadOnlyCollection<bool> source) :
-    this._adjacents = new Array2d<int>(cols, source.length ~/ cols),
-    super.wrap(cols, source.toList()) {
+  Field._internal(this.bombCount, int cols, UnmodifiableListView<bool> source)
+      : this._adjacents = new Array2d<int>(cols, source.length ~/ cols),
+        super.wrap(cols, source.toList()) {
     assert(width > 0);
     assert(height > 0);
     assert(bombCount > 0);

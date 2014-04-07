@@ -103,8 +103,8 @@ void _onPopupClick(args) {
 
 void _onDifficultyClick(args) {
   window.location
-    ..href = args.toElement.href
-    ..reload();
+      ..href = args.toElement.href
+      ..reload();
 }
 
 void _onKeyDown(args) {

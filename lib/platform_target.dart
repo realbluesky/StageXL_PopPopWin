@@ -21,7 +21,7 @@ abstract class PlatformTarget {
   Future setValue(String key, String value);
 
   Future<String> getValue(String key);
-  
+
   int get size;
 
   bool get showAbout;

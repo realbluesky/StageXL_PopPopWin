@@ -30,7 +30,7 @@ class PlatformWeb extends PlatformTarget {
       new Future.value(window.localStorage[key]);
 
   int get size {
-    var hash = (_urlHash == null)?'7':_urlHash;
+    var hash = (_urlHash == null) ? '7' : _urlHash;
     hash = hash.replaceAll('#', '');
     return int.parse(hash, onError: (e) => 7);
   }

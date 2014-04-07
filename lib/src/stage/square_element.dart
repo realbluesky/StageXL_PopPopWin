@@ -15,10 +15,10 @@ class SquareElement extends Sprite {
                                                "number_seven", "number_eight"];
 
   final int x, y;
-  final Bitmap bitmap = new Bitmap(new BitmapData(_size, _size, true, Color.Transparent));
+  final Bitmap _bitmap = new Bitmap(new BitmapData(_size, _size, true, Color.Transparent));
 
   SquareElement(this.x, this.y) {
-    addChild(bitmap);
+    addChild(_bitmap);
 
     onMouseClick.listen(_onClick);
     onMouseRightClick.listen(_onClick);
@@ -48,13 +48,13 @@ class SquareElement extends Sprite {
 
     useHandCursor = !_game.gameEnded && [SquareState.hidden, SquareState.flagged].contains(_squareState);
 
-    bitmap.bitmapData
+    _bitmap.bitmapData
       ..clear()
       ..drawPixels(_opaqueAtlas.getBitmapData(textureName), new Rectangle(0,0,_size,_size), new Point(0,0));
   }
 
   void _onClick(MouseEvent e) {
-    if(!_game.gameEnded) {
+    if (!_game.gameEnded) {
       bool alt = (e.type == MouseEvent.RIGHT_CLICK) || e.shiftKey;
       _gameElement._click(x, y, alt);
     }
