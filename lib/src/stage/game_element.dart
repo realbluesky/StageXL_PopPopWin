@@ -50,14 +50,13 @@ class GameElement extends Sprite {
         ..addTo(this);
 
     _boardElement = new BoardElement(this)
-      ..x = _boardOffset.x + _edgeOffset * _boardScale
-      ..y = _boardOffset.y + _edgeOffset * _boardScale;
+        ..x = _boardOffset.x + _edgeOffset * _boardScale
+        ..y = _boardOffset.y + _edgeOffset * _boardScale;
 
 
     _gameRoot.bestTimeMilliseconds.then((v) {
-      if(v == null) v = 0;
-      _scoreElement = new ScoreElement(v)
-        ..addTo(this);
+      if (v == null) v = 0;
+      _scoreElement = new ScoreElement(v)..addTo(this);
 
       stage.juggler.add(_scoreElement);
 
@@ -70,7 +69,7 @@ class GameElement extends Sprite {
         ..y = 20
         ..scaleX = logoScale
         ..scaleY = logoScale
-        ..x = _backgroundSize.width/2 - _logoButton.width/2
+        ..x = _backgroundSize.width / 2 - _logoButton.width / 2
         ..onMouseClick.listen((e) => _titleClickedEventHandle.add(null))
         ..addTo(this);
 
@@ -266,12 +265,12 @@ class GameElement extends Sprite {
           ..onComplete.listen((e) => shadow.removeFromParent())
           ..addTo(_dartLayer);
 
-        stage.juggler
-            ..add(dart)
-            ..add(shadow);
+      stage.juggler
+          ..add(dart)
+          ..add(shadow);
 
-      }
     }
+  }
 
 
 }

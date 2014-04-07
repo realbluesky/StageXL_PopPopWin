@@ -54,7 +54,7 @@ class SquareElement extends Sprite {
   }
 
   void _onClick(MouseEvent e) {
-    if(!_game.gameEnded) {
+    if (!_game.gameEnded) {
       bool alt = (e.type == MouseEvent.RIGHT_CLICK) || e.shiftKey;
       _gameElement._click(x, y, alt);
     }

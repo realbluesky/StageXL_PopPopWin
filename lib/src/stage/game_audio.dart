@@ -1,8 +1,13 @@
 part of pop_pop_win.stage;
 
 class GameAudio {
-  static const String WIN = 'win', CLICK = 'click', POP = 'Pop', FLAG = 'flag',
-      UNFLAG = 'unflag', BOMB = 'Bomb', THROW_DART = 'throw';
+  static const String WIN = 'win',
+      CLICK = 'click',
+      POP = 'Pop',
+      FLAG = 'flag',
+      UNFLAG = 'unflag',
+      BOMB = 'Bomb',
+      THROW_DART = 'throw';
 
   static final StreamController<String> _audioEventHandle =
       new StreamController<String>();

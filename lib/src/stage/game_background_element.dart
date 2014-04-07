@@ -1,11 +1,11 @@
 part of pop_pop_win.stage;
 
 class GameBackgroundElement extends Sprite {
-  
+
   num get _backgroundScale => (parent as GameElement)._boardScale;
   num get _boardSize => (parent as GameElement)._boardSize;
   Game get _game => (parent as GameElement).game;
-  
+
   GameBackgroundElement(GameElement gameElement, TextureAtlas op) {
       addTo(gameElement);
       
@@ -71,9 +71,9 @@ class GameBackgroundElement extends Sprite {
         ..y = GameElement._boardOffset.y
         ..scaleX = _backgroundScale
         ..scaleY = _backgroundScale;
-      
-      addChild(board);
-    
+
+    addChild(board);
+
   }
-  
+
 }

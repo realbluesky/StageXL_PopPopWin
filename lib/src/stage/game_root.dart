@@ -29,11 +29,12 @@ class GameRoot extends GameManager {
     }
   }
 
-  void gameUpdated(args) { }
+  void gameUpdated(args) {}
 
   void newGame() {
     super.newGame();
-    if(_gameElement != null) _gameElement._boardElement.squares.forEach((se) => se.updateState());
+    if (_gameElement != null) _gameElement._boardElement.squares.forEach((se) =>
+        se.updateState());
   }
 
 }

@@ -77,7 +77,7 @@ class GameStorage {
   static String _getKey(int w, int h, int m) => "w$w-h$h-m$m";
 
   static int _parseValue(String value, int defaultValue) {
-    if(value == null) {
+    if (value == null) {
       return defaultValue;
     } else {
       return int.parse(value);
