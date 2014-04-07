@@ -2,7 +2,7 @@ part of pop_pop_win.html;
 
 class GameStorage {
   static const _gameCountKey = 'gameCount';
-  final EventHandle _bestTimeUpdated = new EventHandle();
+  final StreamController _bestTimeUpdated = new StreamController();
   final Map<String, String> _cache = new Map<String, String>();
 
   Future<int> get gameCount => _getIntValue(_gameCountKey);

@@ -3,8 +3,9 @@ part of pop_pop_win.game;
 class Game {
   final Field field;
   final Array2d<SquareState> _states;
-  final EventHandle<EventArgs> _updatedEvent = new EventHandle<EventArgs>();
-  final EventHandle<GameState> _gameStateEvent = new EventHandle<GameState>();
+  final StreamController _updatedEvent = new StreamController();
+  final StreamController<GameState> _gameStateEvent =
+      new StreamController<GameState>();
 
   GameState _state;
   int _bombsLeft;
@@ -257,7 +258,7 @@ class Game {
     _setState(GameState.lost);
   }
 
-  void _update() => _updatedEvent.add(EventArgs.empty);
+  void _update() => _updatedEvent.add(null);
 
   void _setState(GameState value) {
     assert(value != null);

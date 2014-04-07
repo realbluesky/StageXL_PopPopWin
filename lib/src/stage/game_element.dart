@@ -37,8 +37,8 @@ class GameElement extends Sprite {
 
     _gameBackground = new GameBackgroundElement(this, opa);
 
-    Bitmap newButtonNormal = new Bitmap(sta.getBitmapData("button_new_game"));
-    Bitmap newButtonPressed = new Bitmap(sta.getBitmapData("button_new_game_clicked"));
+    var newButtonNormal = new Bitmap(sta.getBitmapData("button_new_game"));
+    var newButtonPressed = new Bitmap(sta.getBitmapData("button_new_game_clicked"));
 
     _newGameButton = new SimpleButton(newButtonNormal, newButtonPressed, newButtonPressed, newButtonPressed)
         ..x = 450
