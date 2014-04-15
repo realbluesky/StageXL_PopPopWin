@@ -25,6 +25,6 @@ class _Audio {
         name = '${GameAudio.BOMB}$i';
         break;
     }
-    _resourceManager.getSound(name).play();
+    _resourceManager.getSoundSprite('audio').play(name);
   }
 }

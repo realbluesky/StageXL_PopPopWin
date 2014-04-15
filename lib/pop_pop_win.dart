@@ -24,8 +24,7 @@ void startGame(PlatformTarget platform) {
   RenderLoop renderLoop = new RenderLoop();
   renderLoop.addStage(stage);
 
-  //TODO create webp versions of image assets
-  //BitmapData.defaultLoadOptions.webp = true;
+  BitmapData.defaultLoadOptions.webp = true;
 
   //have to load the loading bar first...
   ResourceManager resourceManager = new ResourceManager();
@@ -53,9 +52,8 @@ void startGame(PlatformTarget platform) {
     resourceManager
         ..addTextureAtlas('opaque', 'resources/images/opaque.json', TextureAtlasFormat.JSON)
         ..addTextureAtlas('animated', 'resources/images/animated.json', TextureAtlasFormat.JSON);
-
-      //TODO use sound sprites if Bernhard merges PR
-      _Audio._AUDIO_NAMES.forEach((s) => resourceManager.addSound(s, 'resources/audio/$s.mp3'));
+      
+      resourceManager.addSoundSprite('audio', 'resources/audio/audio.json');
 
       resourceManager.onProgress.listen((e) {
         bar.ratio = resourceManager.finishedResources.length/resourceManager.resources.length;
