@@ -1,9 +1,15 @@
-part of pop_pop_win.stage;
+library pop_pop_win.stage.game_background_element;
+
+
+import 'package:stagexl/stagexl.dart' hide Vector;
+
+import '../game.dart';
+import 'game_element.dart';
 
 class GameBackgroundElement extends Sprite {
 
-  num get _backgroundScale => (parent as GameElement)._boardScale;
-  num get _boardSize => (parent as GameElement)._boardSize;
+  num get _backgroundScale => (parent as GameElement).boardScale;
+  num get _boardSize => (parent as GameElement).boardSize;
   Game get _game => (parent as GameElement).game;
 
   GameBackgroundElement(GameElement gameElement, TextureAtlas op) {
@@ -67,8 +73,8 @@ class GameBackgroundElement extends Sprite {
     }
 
     Bitmap board = new Bitmap(boardData)
-        ..x = GameElement._boardOffset.x
-        ..y = GameElement._boardOffset.y
+        ..x = GameElement.BOARD_OFFSET.x
+        ..y = GameElement.BOARD_OFFSET.y
         ..scaleX = _backgroundScale
         ..scaleY = _backgroundScale;
 

@@ -1,13 +1,6 @@
-library pop_pop_win.html;
+library pop_pop_win.platform;
 
-import 'dart:async';
-
-import 'package:pop_pop_win/platform_target.dart';
-
-import 'game.dart';
-
-part 'html/game_storage.dart';
-part 'html/game_manager.dart';
+import '../platform_target.dart';
 
 PlatformTarget _platformImpl;
 

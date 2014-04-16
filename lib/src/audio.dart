@@ -1,4 +1,8 @@
-part of pop_pop_win.stage;
+library pop_pop_win.audio;
+
+import 'dart:math' hide Point, Rectangle;
+
+import 'package:stagexl/stagexl.dart' hide Vector;
 
 class GameAudio {
   static final Random _rnd = new Random();

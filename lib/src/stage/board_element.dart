@@ -1,4 +1,11 @@
-part of pop_pop_win.stage;
+library pop_pop_win.stage.board_element;
+
+import 'package:bot/bot.dart';
+import 'package:stagexl/stagexl.dart' hide Vector;
+
+import '../game.dart';
+import 'game_element.dart';
+import 'square_element.dart';
 
 class BoardElement extends Sprite {
   Array2d<SquareElement> _elements;
@@ -7,9 +14,9 @@ class BoardElement extends Sprite {
     addTo(gameElement);
 
     _elements = new Array2d<SquareElement>(
-              _game.field.width, _game.field.height);
+              game.field.width, game.field.height);
 
-    num scaledSize = SquareElement._size * _boardScale;
+    num scaledSize = SquareElement.SIZE * _boardScale;
     for (int i = 0; i < _elements.length; i++) {
       var coords = _elements.getCoordinate(i);
       var se = new SquareElement(coords.item1, coords.item2)
@@ -25,13 +32,13 @@ class BoardElement extends Sprite {
 
   }
 
-  GameElement get _gameElement => parent;
-  num get _boardScale => _gameElement._boardScale;
-  num get _boardSize => _gameElement._boardSize;
+  GameElement get gameElement => parent;
+  num get _boardScale => gameElement.boardScale;
+  num get _boardSize => gameElement.boardSize;
   Array2d<SquareElement> get squares => _elements;
-  Game get _game => _gameElement.game;
-  Stage get _stage => _gameElement.manager.stage;
+  Game get game => gameElement.game;
+  Stage get _stage => gameElement.manager.stage;
 
-  TextureAtlas get _opaqueAtlas => _gameElement.resourceManager.getTextureAtlas('opaque');
-
+  TextureAtlas get opaqueAtlas =>
+      gameElement.resourceManager.getTextureAtlas('opaque');
 }

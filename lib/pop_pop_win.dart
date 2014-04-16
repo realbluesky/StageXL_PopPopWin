@@ -5,9 +5,10 @@ import 'dart:html';
 
 import 'package:stagexl/stagexl.dart';
 
-import 'package:pop_pop_win/platform_target.dart';
-import 'package:pop_pop_win/src/html.dart';
-import 'package:pop_pop_win/src/stage.dart';
+import 'platform_target.dart';
+import 'src/audio.dart';
+import 'src/platform.dart';
+import 'src/stage.dart';
 
 const String _ASSET_DIR = 'resources/';
 

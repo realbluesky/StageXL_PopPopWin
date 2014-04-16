@@ -1,4 +1,9 @@
-part of pop_pop_win.html;
+library pop_pop_win.game_manager;
+
+import 'dart:async';
+
+import 'game_storage.dart';
+import 'game.dart';
 
 abstract class GameManager {
   final int _width, _height, _bombCount;
@@ -30,11 +35,11 @@ abstract class GameManager {
     }
     final f = new Field(_bombCount, _width, _height);
     _game = new Game(f);
-    _updatedEventId = _game.updated.listen(gameUpdated);
+    _updatedEventId = _game.updated.listen((_) => gameUpdated());
     _gameStateChangedId = _game.stateChanged.listen(_gameStateChanged);
   }
 
-  void gameUpdated(args);
+  void gameUpdated() {}
 
   void resetScores() {
     _gameStorage.reset();

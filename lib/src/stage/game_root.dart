@@ -1,4 +1,12 @@
-part of pop_pop_win.stage;
+library pop_pop_win.stage.game_root;
+
+import 'package:stagexl/stagexl.dart' hide Vector;
+
+import '../game.dart';
+import '../game_manager.dart';
+
+import '../audio.dart';
+import 'game_element.dart';
 
 class GameRoot extends GameManager {
   final Stage stage;
@@ -21,21 +29,19 @@ class GameRoot extends GameManager {
 
   void onGameStateChanged(GameState newState) {
     if (newState == GameState.won) {
-      _gameElement._boardElement.squares.forEach((se) => se.updateState());
-      if (game.duration.inMilliseconds < _gameElement._scoreElement.bestTime
-          || _gameElement._scoreElement.bestTime == 0) {
-        _gameElement._scoreElement.bestTime = game.duration.inMilliseconds;
+      _gameElement.boardElement.squares.forEach((se) => se.updateState());
+      if (game.duration.inMilliseconds < _gameElement.scoreElement.bestTime
+          || _gameElement.scoreElement.bestTime == 0) {
+        _gameElement.scoreElement.bestTime = game.duration.inMilliseconds;
       }
       GameAudio.win();
     }
   }
 
-  void gameUpdated(args) {}
-
   void newGame() {
     super.newGame();
     if (_gameElement != null) {
-      _gameElement._boardElement.squares.forEach((se) => se.updateState());
+      _gameElement.boardElement.squares.forEach((se) => se.updateState());
     }
   }
 }

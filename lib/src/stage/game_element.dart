@@ -1,15 +1,30 @@
-part of pop_pop_win.stage;
+library pop_pop_win.stage.game_element;
+
+import 'dart:async';
+import 'dart:math' hide Point, Rectangle;
+
+import 'package:bot/bot.dart';
+import 'package:stagexl/stagexl.dart' hide Vector;
+
+import '../game.dart';
+
+import 'board_element.dart';
+import '../audio.dart';
+import 'game_background_element.dart';
+import 'game_root.dart';
+import 'score_element.dart';
+import 'square_element.dart';
 
 class GameElement extends Sprite {
   static const _edgeOffset = 32;
   static const _backgroundSize = const Size(2048, 1536);
-  static const _backgroundHoleSize = 16 * SquareElement._size + 2 * _edgeOffset;
-  static const _boardOffset = const Vector(352, 96);
+  static const _backgroundHoleSize = 16 * SquareElement.SIZE + 2 * _edgeOffset;
+  static const BOARD_OFFSET = const Vector(352, 96);
   static const _popAnimationHitFrame = 12;
   static const _popExplodeAnimationOffset = const Vector(-88, -88);
   static const _dartAnimationOffset =
-      const Vector(-512 + 0.5 * SquareElement._size,
-          -388 + 0.5 * SquareElement._size);
+      const Vector(-512 + 0.5 * SquareElement.SIZE,
+          -388 + 0.5 * SquareElement.SIZE);
 
   final GameRoot manager;
 
@@ -20,18 +35,26 @@ class GameElement extends Sprite {
   Sprite _popLayer = new Sprite(), _dartLayer = new Sprite();
 
   num _boardSize, _boardScale;
+
+
   int _targetX, _targetY;
   TextureAtlas _animations;
 
   Game get game => manager.game;
   ResourceManager get resourceManager => manager.resourceManager;
 
+  num get boardSize => _boardSize;
+  num get boardScale => _boardScale;
+
+  ScoreElement get scoreElement => _scoreElement;
+  BoardElement get boardElement => _boardElement;
+
   GameElement(this.manager) {
     TextureAtlas opa = resourceManager.getTextureAtlas('opaque');
     TextureAtlas sta = resourceManager.getTextureAtlas('static');
     _animations = resourceManager.getTextureAtlas('animated');
 
-    _boardSize = game.field.width * SquareElement._size + 2 * _edgeOffset;
+    _boardSize = game.field.width * SquareElement.SIZE + 2 * _edgeOffset;
     _boardScale = _backgroundHoleSize / _boardSize;
 
     _gameBackground = new GameBackgroundElement(this, opa);
@@ -49,8 +72,8 @@ class GameElement extends Sprite {
         ..addTo(this);
 
     _boardElement = new BoardElement(this)
-        ..x = _boardOffset.x + _edgeOffset * _boardScale
-        ..y = _boardOffset.y + _edgeOffset * _boardScale;
+        ..x = BOARD_OFFSET.x + _edgeOffset * _boardScale
+        ..y = BOARD_OFFSET.y + _edgeOffset * _boardScale;
 
 
     manager.bestTimeMilliseconds.then((v) {
@@ -74,16 +97,16 @@ class GameElement extends Sprite {
 
     _popLayer
         ..mouseEnabled = false
-        ..x = _boardOffset.x + _edgeOffset * _boardScale
-        ..y = _boardOffset.y + _edgeOffset * _boardScale
+        ..x = BOARD_OFFSET.x + _edgeOffset * _boardScale
+        ..y = BOARD_OFFSET.y + _edgeOffset * _boardScale
         ..scaleX = _boardScale
         ..scaleY = _boardScale
         ..addTo(this);
 
     _dartLayer
         ..mouseEnabled = false
-        ..x = _boardOffset.x + _edgeOffset * _boardScale
-        ..y = _boardOffset.y + _edgeOffset * _boardScale
+        ..x = BOARD_OFFSET.x + _edgeOffset * _boardScale
+        ..y = BOARD_OFFSET.y + _edgeOffset * _boardScale
         ..scaleX = _boardScale
         ..scaleY = _boardScale
         ..addTo(this);
@@ -102,7 +125,7 @@ class GameElement extends Sprite {
     }
   }
 
-  void _click(int x, int y, bool alt) {
+  void click(int x, int y, bool alt) {
     assert(!game.gameEnded);
     final ss = game.getSquareState(x, y);
 
@@ -152,7 +175,7 @@ class GameElement extends Sprite {
   bool _toggleFlag(int x, int y) {
     assert(!game.gameEnded);
     final se = _boardElement.squares.get(x, y);
-    final ss = se._squareState;
+    final ss = se.squareState;
     if (ss == SquareState.hidden) {
       game.setFlag(x, y, true);
       se.updateState();
@@ -183,7 +206,7 @@ class GameElement extends Sprite {
 
     final values = reveals.map((c) {
       var initialOffset =
-          new Vector(SquareElement._size * c.x, SquareElement._size * c.y);
+          new Vector(SquareElement.SIZE * c.x, SquareElement.SIZE * c.y);
       var squareOffset = _popExplodeAnimationOffset + initialOffset;
 
       var delay = _popAnimationHitFrame + ((c - start).magnitude * 4).toInt();
@@ -205,7 +228,7 @@ class GameElement extends Sprite {
       int delay = v[3];
 
       var se = _boardElement.squares.get(c.x, c.y);
-      var ss = se._squareState;
+      var ss = se.squareState;
 
       String texturePrefix = ss==SquareState.bomb?'balloon_explode':'balloon_pop';
 
@@ -243,7 +266,7 @@ class GameElement extends Sprite {
     GameAudio.throwDart();
     for (var point in points) {
       var squareOffset = _dartAnimationOffset +
-          new Vector(SquareElement._size * point.x, SquareElement._size * point.y);
+          new Vector(SquareElement.SIZE * point.x, SquareElement.SIZE * point.y);
 
       FlipBook dart = new FlipBook(_animations.getBitmapDatas('dart'), stage.frameRate, false);
       dart
@@ -270,3 +293,8 @@ class GameElement extends Sprite {
     }
   }
 }
+
+
+final StreamController _titleClickedEventHandle = new StreamController();
+
+Stream get titleClickedEvent => _titleClickedEventHandle.stream;
