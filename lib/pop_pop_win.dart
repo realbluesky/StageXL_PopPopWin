@@ -2,15 +2,12 @@ library pop_pop_win;
 
 import 'dart:async';
 import 'dart:html';
-import 'dart:math' as math;
 
 import 'package:stagexl/stagexl.dart';
 
 import 'package:pop_pop_win/platform_target.dart';
 import 'package:pop_pop_win/src/html.dart';
 import 'package:pop_pop_win/src/stage.dart';
-
-part 'src/pop_pop_win/audio.dart';
 
 const String _ASSET_DIR = 'resources/';
 
@@ -90,7 +87,7 @@ void _secondaryLoad(ResourceManager resourceManager, Stage stage,
   var size = targetPlatform.size;
   var m = (size * size * 0.15625).toInt();
 
-  var _audio = new _Audio(resourceManager);
+  GameAudio.initialize(resourceManager);
   var gameRoot = new GameRoot(size, size, m, stage, resourceManager);
 
   // disable touch events

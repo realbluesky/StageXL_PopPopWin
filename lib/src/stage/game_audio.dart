@@ -1,30 +1,49 @@
 part of pop_pop_win.stage;
 
 class GameAudio {
-  static const String WIN = 'win',
-      CLICK = 'click',
-      POP = 'Pop',
-      FLAG = 'flag',
-      UNFLAG = 'unflag',
-      BOMB = 'Bomb',
-      THROW_DART = 'throw';
+  static final Random _rnd = new Random();
 
-  static final StreamController<String> _audioEventHandle =
-      new StreamController<String>();
+  static ResourceManager _resourceManager;
 
-  static Stream<String> get audioEvent => _audioEventHandle.stream;
+  static const String _WIN = 'win',
+      _CLICK = 'click',
+      _POP = 'Pop',
+      _FLAG = 'flag',
+      _UNFLAG = 'unflag',
+      _BOMB = 'Bomb',
+      _THROW_DART = 'throw';
 
-  static void win() => _audioEventHandle.add(WIN);
+  static void initialize(ResourceManager resourceManager) {
+    if (_resourceManager != null) throw new StateError('already initialized');
+    _resourceManager = resourceManager;
+  }
 
-  static void click() => _audioEventHandle.add(CLICK);
+  static void win() => _playAudio(_WIN);
 
-  static void pop() => _audioEventHandle.add(POP);
+  static void click() => _playAudio(_CLICK);
 
-  static void flag() => _audioEventHandle.add(FLAG);
+  static void pop() => _playAudio(_POP);
 
-  static void unflag() => _audioEventHandle.add(UNFLAG);
+  static void flag() => _playAudio(_FLAG);
 
-  static void bomb() => _audioEventHandle.add(BOMB);
+  static void unflag() => _playAudio(_UNFLAG);
 
-  static void throwDart() => _audioEventHandle.add(THROW_DART);
+  static void bomb() => _playAudio(_BOMB);
+
+  static void throwDart() => _playAudio(_THROW_DART);
+
+  static void _playAudio(String name) {
+    if (_resourceManager == null) throw new StateError('Not initialized');
+    switch (name) {
+      case GameAudio._POP:
+        var i = _rnd.nextInt(8);
+        name = '${GameAudio._POP}$i';
+        break;
+      case GameAudio._BOMB:
+        var i = _rnd.nextInt(4);
+        name = '${GameAudio._BOMB}$i';
+        break;
+    }
+    _resourceManager.getSoundSprite('audio').play(name);
+  }
 }
