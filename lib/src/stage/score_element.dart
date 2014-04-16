@@ -21,5 +21,5 @@ class ScoreElement extends TextField implements Animatable {
       return true;
   }
 
-  Game get game => (parent as GameElement)._gameRoot.game;
+  Game get game => (parent as GameElement).manager.game;
 }

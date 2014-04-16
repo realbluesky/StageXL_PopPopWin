@@ -11,7 +11,7 @@ class GameElement extends Sprite {
       const Vector(-512 + 0.5 * SquareElement._size,
           -388 + 0.5 * SquareElement._size);
 
-  final GameRoot _gameRoot;
+  final GameRoot manager;
 
   GameBackgroundElement _gameBackground;
   BoardElement _boardElement;
@@ -23,11 +23,10 @@ class GameElement extends Sprite {
   int _targetX, _targetY;
   TextureAtlas _animations;
 
-  GameRoot get manager => _gameRoot;
-  Game get game => _gameRoot.game;
-  ResourceManager get resourceManager => _gameRoot.resourceManager;
+  Game get game => manager.game;
+  ResourceManager get resourceManager => manager.resourceManager;
 
-  GameElement(this._gameRoot) {
+  GameElement(this.manager) {
     TextureAtlas opa = resourceManager.getTextureAtlas('opaque');
     TextureAtlas sta = resourceManager.getTextureAtlas('static');
     _animations = resourceManager.getTextureAtlas('animated');
@@ -54,7 +53,7 @@ class GameElement extends Sprite {
         ..y = _boardOffset.y + _edgeOffset * _boardScale;
 
 
-    _gameRoot.bestTimeMilliseconds.then((v) {
+    manager.bestTimeMilliseconds.then((v) {
       if (v == null) v = 0;
       _scoreElement = new ScoreElement(v)..addTo(this);
 

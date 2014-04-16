@@ -30,7 +30,7 @@ class BoardElement extends Sprite {
   num get _boardSize => _gameElement._boardSize;
   Array2d<SquareElement> get squares => _elements;
   Game get _game => _gameElement.game;
-  Stage get _stage => _gameElement._gameRoot.stage;
+  Stage get _stage => _gameElement.manager.stage;
 
   TextureAtlas get _opaqueAtlas => _gameElement.resourceManager.getTextureAtlas('opaque');
 
