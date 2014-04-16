@@ -20,75 +20,83 @@ const String _TRANSPARENT_STATIC_TEXTURE = '${_ASSET_DIR}images/static.json';
 void startGame(PlatformTarget platform) {
   initPlatform(platform);
 
-  Stage stage = new Stage(querySelector('#gameCanvas'), webGL: true, color: 0xb4ad7f, frameRate: 60);
+  Stage stage = new Stage(querySelector('#gameCanvas'), webGL: true, color:
+      0xb4ad7f, frameRate: 60);
   RenderLoop renderLoop = new RenderLoop();
   renderLoop.addStage(stage);
 
   BitmapData.defaultLoadOptions.webp = true;
 
   //have to load the loading bar first...
-  ResourceManager resourceManager = new ResourceManager();
-  resourceManager
-    ..addTextureAtlas("static", "resources/images/static.json", TextureAtlasFormat.JSON)
-    ..load().then((r) {
+  var resourceManager = new ResourceManager()..addTextureAtlas("static",
+      "resources/images/static.json", TextureAtlasFormat.JSON);
+
+  resourceManager.load().then((r) {
 
     TextureAtlas ta = resourceManager.getTextureAtlas('static');
 
     var bar = new Gauge(ta.getBitmapData('loading_bar'), Gauge.DIRECTION_RIGHT)
-      ..x = 51
-      ..y = 8
-      ..ratio = 0;
+        ..x = 51
+        ..y = 8
+        ..ratio = 0;
+
+    var loadingText = new Bitmap(ta.getBitmapData('loading_text'))
+        ..x = 141
+        ..y = 10;
 
     var loadingSprite = new Sprite()
-      ..addChild(new Bitmap(ta.getBitmapData('loading_background')))
-      ..addChild(bar)
-      ..addChild(new Bitmap(ta.getBitmapData('loading_text'))..x=141..y=10)
-      ..x = stage.sourceWidth~/2-1008~/2
-      ..y = 400
-      ..scaleX = 2
-      ..scaleY = 2
-      ..addTo(stage);
+        ..addChild(new Bitmap(ta.getBitmapData('loading_background')))
+        ..addChild(bar)
+        ..addChild(loadingText)
+        ..x = stage.sourceWidth ~/ 2 - 1008 ~/ 2
+        ..y = 400
+        ..scaleX = 2
+        ..scaleY = 2
+        ..addTo(stage);
 
     resourceManager
-        ..addTextureAtlas('opaque', 'resources/images/opaque.json', TextureAtlasFormat.JSON)
-        ..addTextureAtlas('animated', 'resources/images/animated.json', TextureAtlasFormat.JSON);
-      
-      resourceManager.addSoundSprite('audio', 'resources/audio/audio.json');
+        ..addTextureAtlas('opaque', 'resources/images/opaque.json',
+            TextureAtlasFormat.JSON)
+        ..addTextureAtlas('animated', 'resources/images/animated.json',
+            TextureAtlasFormat.JSON);
 
-      resourceManager.onProgress.listen((e) {
-        bar.ratio = resourceManager.finishedResources.length/resourceManager.resources.length;
-      });
+    resourceManager.addSoundSprite('audio', 'resources/audio/audio.json');
 
-      resourceManager.load().then((r) {
+    resourceManager.onProgress.listen((e) {
+      bar.ratio = resourceManager.finishedResources.length /
+          resourceManager.resources.length;
+    });
 
-        Tween tween = stage.juggler.tween(loadingSprite, .5)..animate.alpha.to(0);
-        tween.onComplete = () => stage.removeChild(loadingSprite);
+    resourceManager.load().then((r) {
 
-        _updateAbout();
+      Tween tween = stage.juggler.tween(loadingSprite, .5)..animate.alpha.to(0);
+      tween.onComplete = () => stage.removeChild(loadingSprite);
 
-        targetPlatform.aboutChanged.listen((_) => _updateAbout());
+      _updateAbout();
 
-        var size = targetPlatform.size;
-        var m = (size * size * 0.15625).toInt();
+      targetPlatform.aboutChanged.listen((_) => _updateAbout());
 
-        var _audio = new _Audio(resourceManager);
-        var gameRoot = new GameRoot(size, size, m, stage, resourceManager);
+      var size = targetPlatform.size;
+      var m = (size * size * 0.15625).toInt();
 
-        // disable touch events
-        window.onTouchMove.listen((args) => args.preventDefault());
+      var _audio = new _Audio(resourceManager);
+      var gameRoot = new GameRoot(size, size, m, stage, resourceManager);
 
-        window.onKeyDown.listen(_onKeyDown);
+      // disable touch events
+      window.onTouchMove.listen((args) => args.preventDefault());
 
-        querySelector('#popup').onClick.listen(_onPopupClick);
+      window.onKeyDown.listen(_onKeyDown);
 
-        titleClickedEvent.listen((args) => targetPlatform.toggleAbout(true));
+      querySelector('#popup').onClick.listen(_onPopupClick);
 
-      }).catchError((error) {
-        for(var resource in resourceManager.failedResources) {
-          print("Loading resouce failed: "
-              "${resource.kind}.${resource.name} - ${resource.error}");
-        }
-      });
+      titleClickedEvent.listen((args) => targetPlatform.toggleAbout(true));
+
+    }).catchError((error) {
+      for (var resource in resourceManager.failedResources) {
+        print("Loading resouce failed: "
+            "${resource.kind}.${resource.name} - ${resource.error}");
+      }
+    });
   });
 }
 
