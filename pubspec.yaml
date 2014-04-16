@@ -8,6 +8,6 @@ dependencies:
   chrome_gen: '>=0.3.0 <0.4.0'
   stagexl:
     git: git://github.com/bp74/StageXL.git
-    version: '>=0.9.0 <0.11.0'
+    version: '>=0.9.1 <0.11.0'
 dev_dependencies:
   unittest: '>=0.10.0 <0.11.0'

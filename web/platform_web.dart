@@ -77,6 +77,9 @@ class PlatformWeb extends PlatformTarget {
       case _ABOUT_HASH:
         _aboutController.add(null);
         break;
+      default:
+        if (hash != '') loc.reload();
+        break;
     }
   }
 }

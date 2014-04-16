@@ -80,7 +80,6 @@ void startGame(PlatformTarget platform) {
         window.onKeyDown.listen(_onKeyDown);
 
         querySelector('#popup').onClick.listen(_onPopupClick);
-        querySelectorAll('.difficulty a').onClick.listen(_onDifficultyClick);
 
         titleClickedEvent.listen((args) => targetPlatform.toggleAbout(true));
 
@@ -97,12 +96,6 @@ void _onPopupClick(args) {
   if (args.toElement is! AnchorElement) {
     targetPlatform.toggleAbout(false);
   }
-}
-
-void _onDifficultyClick(args) {
-  window.location
-      ..href = args.toElement.href
-      ..reload();
 }
 
 void _onKeyDown(args) {

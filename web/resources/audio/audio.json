@@ -1,10 +1,10 @@
 {
   "urls": [
+    "audio.opus",
     "audio.mp3",
     "audio.ogg",
     "audio.m4a",
-    "audio.webm",
-    "audio.opus"
+    "audio.webm"
   ],
   "sprite": {
     "Bomb0": [
