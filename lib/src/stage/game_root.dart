@@ -1,4 +1,12 @@
-part of pop_pop_win.stage;
+library pop_pop_win.stage.game_root;
+
+import 'package:stagexl/stagexl.dart' hide Vector;
+
+import '../game.dart';
+import '../game_manager.dart';
+
+import '../audio.dart';
+import 'game_element.dart';
 
 class GameRoot extends GameManager {
   final Stage stage;
@@ -8,8 +16,8 @@ class GameRoot extends GameManager {
   GameRoot(int width, int height, int bombCount,
       this.stage, this.resourceManager) : super(width, height, bombCount) {
 
-    TextureAtlas opa = resourceManager.getTextureAtlas('opaque');
-    TextureAtlas sta = resourceManager.getTextureAtlas('static');
+    var opa = resourceManager.getTextureAtlas('opaque');
+    var sta = resourceManager.getTextureAtlas('static');
 
     _gameElement = new GameElement(this)
         ..alpha = 0;
@@ -17,26 +25,23 @@ class GameRoot extends GameManager {
     stage
         ..addChild(_gameElement)
         ..juggler.tween(_gameElement, .5).animate.alpha.to(1);
-
   }
 
   void onGameStateChanged(GameState newState) {
-    switch (newState) {
-      case GameState.won:
-        _gameElement._boardElement.squares.forEach((se) => se.updateState());
-        if(game.duration.inMilliseconds < _gameElement._scoreElement.bestTime || _gameElement._scoreElement.bestTime == 0)
-          _gameElement._scoreElement.bestTime = game.duration.inMilliseconds;
-        GameAudio.win();
-        break;
+    if (newState == GameState.won) {
+      _gameElement.boardElement.squares.forEach((se) => se.updateState());
+      if (game.duration.inMilliseconds < _gameElement.scoreElement.bestTime
+          || _gameElement.scoreElement.bestTime == 0) {
+        _gameElement.scoreElement.bestTime = game.duration.inMilliseconds;
+      }
+      GameAudio.win();
     }
   }
 
-  void gameUpdated(args) {}
-
   void newGame() {
     super.newGame();
-    if (_gameElement != null) _gameElement._boardElement.squares.forEach((se) =>
-        se.updateState());
+    if (_gameElement != null) {
+      _gameElement.boardElement.squares.forEach((se) => se.updateState());
+    }
   }
-
 }

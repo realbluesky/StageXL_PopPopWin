@@ -1,7 +1,14 @@
-part of pop_pop_win.stage;
+library pop_pop_win.stage.square_element;
+
+
+import 'package:stagexl/stagexl.dart' hide Vector;
+
+import '../game.dart';
+import 'board_element.dart';
+import 'game_element.dart';
 
 class SquareElement extends Sprite {
-  static const int _size = 80;
+  static const int SIZE = 80;
 
   static const List<String> _balloonBits = const['balloon_pieces_a',
                                                  'balloon_pieces_b',
@@ -15,7 +22,7 @@ class SquareElement extends Sprite {
                                                "number_seven", "number_eight"];
 
   final int x, y;
-  final Bitmap _bitmap = new Bitmap(new BitmapData(_size, _size, true, Color.Transparent));
+  final Bitmap _bitmap = new Bitmap(new BitmapData(SIZE, SIZE, true, Color.Transparent));
 
   SquareElement(this.x, this.y) {
     addChild(_bitmap);
@@ -28,7 +35,7 @@ class SquareElement extends Sprite {
 
   void updateState() {
     var textureName;
-    switch (_squareState) {
+    switch (squareState) {
       case SquareState.hidden:
         textureName = _getHiddenTexture();
         break;
@@ -46,24 +53,24 @@ class SquareElement extends Sprite {
         break;
     }
 
-    useHandCursor = !_game.gameEnded && [SquareState.hidden, SquareState.flagged].contains(_squareState);
+    useHandCursor = !_game.gameEnded && [SquareState.hidden, SquareState.flagged].contains(squareState);
 
     _bitmap.bitmapData
       ..clear()
-      ..drawPixels(_opaqueAtlas.getBitmapData(textureName), new Rectangle(0,0,_size,_size), new Point(0,0));
+      ..drawPixels(_opaqueAtlas.getBitmapData(textureName), new Rectangle(0,0,SIZE,SIZE), new Point(0,0));
   }
 
   void _onClick(MouseEvent e) {
     if (!_game.gameEnded) {
       bool alt = (e.type == MouseEvent.RIGHT_CLICK) || e.shiftKey;
-      _gameElement._click(x, y, alt);
+      _gameElement.click(x, y, alt);
     }
   }
 
   String toString() => 'Square at [$x, $y]';
 
   String _getHiddenTexture() {
-    assert(_squareState == SquareState.hidden);
+    assert(squareState == SquareState.hidden);
     if (_game.state == GameState.lost) {
       useHandCursor = false;
       final index = (x + y) % _balloonBits.length;
@@ -74,7 +81,7 @@ class SquareElement extends Sprite {
     }
   }
 
-  SquareState get _squareState => _game.getSquareState(x, y);
+  SquareState get squareState => _game.getSquareState(x, y);
 
   int get _adjacentCount => _game.field.getAdjacentCount(x, y);
 
@@ -83,9 +90,9 @@ class SquareElement extends Sprite {
     return p;
   }
 
-  GameElement get _gameElement => _board._gameElement;
+  GameElement get _gameElement => _board.gameElement;
 
-  TextureAtlas get _opaqueAtlas => _board._opaqueAtlas;
+  TextureAtlas get _opaqueAtlas => _board.opaqueAtlas;
 
-  Game get _game => _board._game;
+  Game get _game => _board.game;
 }

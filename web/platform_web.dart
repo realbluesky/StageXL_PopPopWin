@@ -9,7 +9,7 @@ class PlatformWeb extends PlatformTarget {
 
   final StreamController _aboutController = new StreamController(sync: true);
 
-  PlatformWeb(): super.base() {
+  PlatformWeb() : super.base() {
     window.onPopState.listen((args) => _processUrlHash());
   }
 

@@ -13,10 +13,11 @@ class Game {
   DateTime _startTime;
   DateTime _endTime;
 
-  Game(Field field) :
-    this.field = field,
-    _state = GameState.reset,
-    _states = new Array2d<SquareState>(field.width, field.height, SquareState.hidden) {
+  Game(Field field)
+      : this.field = field,
+        _state = GameState.reset,
+        _states = new Array2d<SquareState>(field.width, field.height,
+          SquareState.hidden) {
     assert(field != null);
     _bombsLeft = field.bombCount;
     _revealsLeft = field.length - field.bombCount;

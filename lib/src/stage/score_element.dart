@@ -1,4 +1,9 @@
-part of pop_pop_win.stage;
+library pop_pop_win.stage.score_element;
+
+import 'package:stagexl/stagexl.dart' hide Vector;
+
+import '../game.dart';
+import 'game_element.dart';
 
 class ScoreElement extends TextField implements Animatable {
 
@@ -21,5 +26,5 @@ class ScoreElement extends TextField implements Animatable {
       return true;
   }
 
-  Game get game => (parent as GameElement)._gameRoot.game;
+  Game get game => (parent as GameElement).manager.game;
 }
