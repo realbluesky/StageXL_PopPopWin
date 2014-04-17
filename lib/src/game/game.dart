@@ -80,18 +80,18 @@ class Game {
     return false;
   }
 
-  List<Coordinate> reveal(int x, int y) {
+  List<Point> reveal(int x, int y) {
     _ensureStarted();
     require(canReveal(x, y), "Item cannot be revealed.");
     final currentSS = _states.get(x, y);
 
-    List<Coordinate> reveals;
+    List<Point> reveals;
 
     // normal reveal
     if (currentSS == SquareState.hidden) {
       if (field.get(x, y)) {
         _setLost();
-        reveals = <Coordinate>[];
+        reveals = <Point>[];
       } else {
         reveals = _doReveal(x, y);
       }
@@ -174,7 +174,7 @@ class Game {
     return false;
   }
 
-  List<Coordinate> _doChord(int x, int y) {
+  List<Point> _doChord(int x, int y) {
     // this does not repeat a bunch of validations that have already happened
     // be careful
     final currentSS = _states.get(x, y);
@@ -201,7 +201,7 @@ class Game {
     // for now we assume counts have been checked
     assert(flagged.length == adjCount);
 
-    var reveals = <Coordinate>[];
+    var reveals = <Point>[];
 
     // if any of the hidden are bombs, we've failed
     if (failed) {
@@ -219,12 +219,12 @@ class Game {
     return reveals;
   }
 
-  List<Coordinate> _doReveal(int x, int y) {
+  List<Point> _doReveal(int x, int y) {
     assert(_states.get(x, y) == SquareState.hidden);
     _states.set(x, y, SquareState.revealed);
     _revealsLeft--;
     assert(_revealsLeft >= 0);
-    var reveals = [new Coordinate(x, y)];
+    var reveals = [new Point(x, y)];
     if (_revealsLeft == 0) {
       _setWon();
     } else if (field.getAdjacentCount(x, y) == 0) {
