@@ -1,10 +1,10 @@
 library pop_pop_win.stage.game_element;
 
 import 'dart:async';
-import 'dart:math' hide Point, Rectangle;
+import 'dart:math';
 
-import 'package:bot/bot.dart';
-import 'package:stagexl/stagexl.dart' hide Vector;
+import 'package:bot/bot.dart' show Size, Vector, Coordinate, Tuple;
+import 'package:stagexl/stagexl.dart' hide Vector, Point;
 
 import '../audio.dart';
 import '../game.dart';
@@ -27,6 +27,8 @@ class GameElement extends Sprite {
           -388 + 0.5 * SquareElement.SIZE);
 
   final GameRoot manager;
+
+  final Random _rnd = new Random();
 
   GameBackgroundElement _gameBackground;
   BoardElement _boardElement;
@@ -129,7 +131,7 @@ class GameElement extends Sprite {
     assert(!game.gameEnded);
     final ss = game.getSquareState(x, y);
 
-    List<Coordinate> reveals = null;
+    List<Point> reveals = null;
 
     if (alt) {
       if (ss == SquareState.hidden || ss == SquareState.flagged) {
@@ -190,10 +192,10 @@ class GameElement extends Sprite {
     return false;
   }
 
-  void _startPopAnimation(Coordinate start, [Iterable<Coordinate> reveals = null]) {
+  void _startPopAnimation(Point start, [Iterable<Point> reveals = null]) {
     if (reveals == null) {
       assert(game.state == GameState.lost);
-      reveals = new NumberEnumerable.fromRange(0, game.field.length)
+      reveals = new Iterable.generate(game.field.length)
           .map((i) {
             var t = game.field.getCoordinate(i);
             var c = new Coordinate(t.item1, t.item2);
@@ -210,7 +212,7 @@ class GameElement extends Sprite {
       var squareOffset = _popExplodeAnimationOffset + initialOffset;
 
       var delay = _popAnimationHitFrame + ((c - start).magnitude * 4).toInt();
-      delay += rnd.nextInt(10);
+      delay += _rnd.nextInt(10);
 
       return [c, initialOffset, squareOffset, delay];
     }).toList();
@@ -221,8 +223,8 @@ class GameElement extends Sprite {
       return da.compareTo(db);
     });
 
-    for (final v in values) {
-      Coordinate c = v[0];
+    for (var v in values) {
+      Point c = v[0];
       Vector initialOffset = v[1];
       Vector squareOffset = v[2];
       int delay = v[3];

@@ -1,7 +1,6 @@
 library pop_pop_win.stage.square_element;
 
-
-import 'package:stagexl/stagexl.dart' hide Vector;
+import 'package:stagexl/stagexl.dart';
 
 import '../game.dart';
 import 'board_element.dart';

@@ -1,7 +1,7 @@
 library pop_pop_win.stage.board_element;
 
-import 'package:bot/bot.dart';
-import 'package:stagexl/stagexl.dart' hide Vector;
+import 'package:bot/bot.dart' show Array2d;
+import 'package:stagexl/stagexl.dart';
 
 import '../game.dart';
 import 'game_element.dart';

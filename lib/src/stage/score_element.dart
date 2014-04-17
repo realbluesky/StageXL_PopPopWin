@@ -1,6 +1,6 @@
 library pop_pop_win.stage.score_element;
 
-import 'package:stagexl/stagexl.dart' hide Vector;
+import 'package:stagexl/stagexl.dart';
 
 import '../game.dart';
 import 'game_element.dart';

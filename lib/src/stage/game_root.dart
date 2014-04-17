@@ -1,11 +1,10 @@
 library pop_pop_win.stage.game_root;
 
-import 'package:stagexl/stagexl.dart' hide Vector;
-
-import '../game.dart';
-import '../game_manager.dart';
+import 'package:stagexl/stagexl.dart';
 
 import '../audio.dart';
+import '../game.dart';
+import '../game_manager.dart';
 import 'game_element.dart';
 
 class GameRoot extends GameManager {
