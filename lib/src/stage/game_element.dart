@@ -6,10 +6,10 @@ import 'dart:math' hide Point, Rectangle;
 import 'package:bot/bot.dart';
 import 'package:stagexl/stagexl.dart' hide Vector;
 
+import '../audio.dart';
 import '../game.dart';
 
 import 'board_element.dart';
-import '../audio.dart';
 import 'game_background_element.dart';
 import 'game_root.dart';
 import 'score_element.dart';
@@ -232,32 +232,18 @@ class GameElement extends Sprite {
 
       String texturePrefix = ss==SquareState.bomb?'balloon_explode':'balloon_pop';
 
-      FlipBook anim = new FlipBook(_animations.getBitmapDatas(texturePrefix), stage.frameRate, false);
-      anim
+      var anim = new FlipBook(_animations.getBitmapDatas(texturePrefix), stage.frameRate, false)
           ..x = squareOffset.x
           ..y = squareOffset.y
           ..alpha = 0
           ..mouseEnabled = false
-          ..onComplete.listen((e) => anim.removeFromParent())
           ..addTo(_popLayer);
+
+      anim.onComplete.listen((e) => anim.removeFromParent());
 
       stage.juggler
           ..add(anim)
-          ..delayCall(() {
-            anim
-                ..alpha = 1
-                ..play();
-            se.updateState();
-            switch (ss) {
-              case SquareState.revealed:
-              case SquareState.hidden:
-                GameAudio.pop();
-                break;
-              case SquareState.bomb:
-                GameAudio.bomb();
-                break;
-            }
-          }, delay / stage.frameRate);
+          ..delayCall(() => _animationDelay(anim, se, ss), delay / stage.frameRate);
     }
   }
 
@@ -268,23 +254,23 @@ class GameElement extends Sprite {
       var squareOffset = _dartAnimationOffset +
           new Vector(SquareElement.SIZE * point.x, SquareElement.SIZE * point.y);
 
-      FlipBook dart = new FlipBook(_animations.getBitmapDatas('dart'), stage.frameRate, false);
-      dart
+      var dart = new FlipBook(_animations.getBitmapDatas('dart'), stage.frameRate, false)
           ..x = squareOffset.x
           ..y = squareOffset.y
           ..mouseEnabled = false
           ..play()
-          ..onComplete.listen((e) => dart.removeFromParent())
           ..addTo(_dartLayer);
 
-      FlipBook shadow = new FlipBook(_animations.getBitmapDatas('shadow'), stage.frameRate, false);
-      shadow
+      dart.onComplete.listen((e) => dart.removeFromParent());
+
+      var shadow = new FlipBook(_animations.getBitmapDatas('shadow'), stage.frameRate, false)
           ..x = squareOffset.x
           ..y = squareOffset.y
           ..mouseEnabled = false
           ..play()
-          ..onComplete.listen((e) => shadow.removeFromParent())
           ..addTo(_dartLayer);
+
+      shadow.onComplete.listen((e) => shadow.removeFromParent());
 
       stage.juggler
           ..add(dart)
@@ -294,6 +280,21 @@ class GameElement extends Sprite {
   }
 }
 
+void _animationDelay(FlipBook anim, SquareElement se, SquareState ss) {
+  anim
+      ..alpha = 1
+      ..play();
+  se.updateState();
+  switch (ss) {
+    case SquareState.revealed:
+    case SquareState.hidden:
+      GameAudio.pop();
+      break;
+    case SquareState.bomb:
+      GameAudio.bomb();
+      break;
+  }
+}
 
 final StreamController _titleClickedEventHandle = new StreamController();
 
