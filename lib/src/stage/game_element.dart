@@ -3,7 +3,7 @@ library pop_pop_win.stage.game_element;
 import 'dart:async';
 import 'dart:math';
 
-import 'package:bot/bot.dart' show Size, Vector, Coordinate, Tuple;
+import 'package:bot/bot.dart' show Size, Vector, Tuple;
 import 'package:stagexl/stagexl.dart' hide Vector, Point;
 
 import '../audio.dart';
@@ -142,7 +142,7 @@ class GameElement extends Sprite {
           final adjHidden = game.field.getAdjacentIndices(x, y)
               .map((i) {
                 final t = game.field.getCoordinate(i);
-                return new Coordinate(t.item1, t.item2);
+                return new Point(t.item1, t.item2);
               })
               .where((t) => game.getSquareState(t.x, t.y) == SquareState.hidden)
               .toList();
@@ -155,7 +155,7 @@ class GameElement extends Sprite {
       }
     } else {
       if (ss == SquareState.hidden) {
-        _startDartAnimation([new Coordinate(x, y)]);
+        _startDartAnimation([new Point(x, y)]);
         reveals = game.reveal(x, y);
       }
     }
@@ -168,9 +168,9 @@ class GameElement extends Sprite {
         assert(first.x == x);
         assert(first.y == y);
       }
-      _startPopAnimation(new Coordinate(x, y), reveals);
+      _startPopAnimation(new Point(x, y), reveals);
     } else if (game.state == GameState.lost) {
-      _startPopAnimation(new Coordinate(x, y));
+      _startPopAnimation(new Point(x, y));
     }
   }
 
@@ -198,7 +198,7 @@ class GameElement extends Sprite {
       reveals = new Iterable.generate(game.field.length)
           .map((i) {
             var t = game.field.getCoordinate(i);
-            var c = new Coordinate(t.item1, t.item2);
+            var c = new Point(t.item1, t.item2);
             return new Tuple(c, game.getSquareState(c.x, c.y));
           })
           .where((t2) => t2.item2 == SquareState.bomb || t2.item2 == SquareState.hidden)
@@ -249,7 +249,7 @@ class GameElement extends Sprite {
     }
   }
 
-  void _startDartAnimation(List<Coordinate> points) {
+  void _startDartAnimation(List<Point> points) {
     assert(points.length >= 1);
     GameAudio.throwDart();
     for (var point in points) {
@@ -277,7 +277,6 @@ class GameElement extends Sprite {
       stage.juggler
           ..add(dart)
           ..add(shadow);
-
     }
   }
 }
