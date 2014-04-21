@@ -6,6 +6,7 @@ import 'package:pop_pop_win/platform_target.dart';
 
 class PlatformWeb extends PlatformTarget {
   static const String _ABOUT_HASH = '#about';
+  bool _sizeAccessed = false;
 
   final StreamController _aboutController = new StreamController(sync: true);
 
@@ -30,6 +31,7 @@ class PlatformWeb extends PlatformTarget {
       new Future.value(window.localStorage[key]);
 
   int get size {
+    _sizeAccessed = true;
     var hash = (_urlHash == null) ? '7' : _urlHash;
     hash = hash.replaceAll('#', '');
     return int.parse(hash, onError: (e) => 7);
@@ -64,7 +66,6 @@ class PlatformWeb extends PlatformTarget {
     var hash = loc.hash;
     var href = loc.href;
 
-    final History history = window.history;
     switch (hash) {
       case "#reset":
         assert(href.endsWith(hash));
@@ -78,7 +79,9 @@ class PlatformWeb extends PlatformTarget {
         _aboutController.add(null);
         break;
       default:
-        if (hash != '') loc.reload();
+        if (hash.isNotEmpty && _sizeAccessed) {
+          loc.reload();
+        }
         break;
     }
   }
